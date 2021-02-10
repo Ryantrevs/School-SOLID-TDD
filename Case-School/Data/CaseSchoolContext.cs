@@ -6,16 +6,17 @@ namespace Case_School.Data
 {
     public class CaseSchoolContext : DbContext
     {
-        private readonly IConfiguration _configuration;
-        public CaseSchoolContext(DbContextOptions options, IConfiguration configuration) :base(options)
+        
+        public CaseSchoolContext(DbContextOptions options) :base(options)
         {
-            this._configuration = configuration;
+            
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (optionsBuilder.IsConfigured) return;
-            optionsBuilder.UseSqlServer(confg => _configuration.GetConnectionString("db"));
+            const string ConnectionString = "Data Source=(LocalDb)\\MSSQLLocalDB;Initial Catalog=SchoolDb;Integrated Security=SSPI;Integrated Security=True";
+            optionsBuilder.UseSqlServer(ConnectionString);
         }
 
         protected override void OnModelCreating(ModelBuilder builder)

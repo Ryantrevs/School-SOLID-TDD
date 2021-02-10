@@ -1,3 +1,4 @@
+using Case_School.Data;
 using Case_School.Handlers;
 using Case_School.Models;
 using Case_School.Repositories;
@@ -26,14 +27,16 @@ namespace Case_School
         {
             services.AddControllersWithViews();
 
-            services.AddTransient<IRepository<Class>, Repository<Class>>();
-            services.AddTransient<IRepository<Student>, Repository<Student>>();
-            services.AddTransient<IRepository<StudentAverages>, Repository<StudentAverages>>();
-            services.AddTransient<IRepository<StudentGrade>, Repository<StudentGrade>>();
-            services.AddTransient<IRepository<Subject>, Repository<Subject>>();
-            services.AddTransient<IRepository<WeightProof>, Repository<WeightProof>>();
+            services.AddScoped<IRepository<Class>, Repository<Class>>();
+            services.AddScoped<IRepository<Student>, Repository<Student>>();
+            services.AddScoped<IRepository<StudentAverages>, Repository<StudentAverages>>();
+            services.AddScoped<IRepository<StudentGrade>, Repository<StudentGrade>>();
+            services.AddScoped<IRepository<Subject>, Repository<Subject>>();
+            services.AddScoped<IRepository<WeightProof>, Repository<WeightProof>>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IFirstHandler, FirstHandler>();
+
+            services.AddDbContext<CaseSchoolContext>();
 
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>

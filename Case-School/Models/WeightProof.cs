@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Case_School.Models
 {
     public class WeightProof
     {
         public String Id { get; set; }
+        [Column(TypeName = "decimal(18,4)")]
         public decimal Value { get; set; }
         public virtual Subject Subject { get; set; }
 

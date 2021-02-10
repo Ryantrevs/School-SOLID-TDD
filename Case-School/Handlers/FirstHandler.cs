@@ -1,5 +1,6 @@
 ﻿using Case_School.Data;
 using Case_School.Models;
+using Case_School.Models.ViewModels;
 using Case_School.Repositories;
 using System;
 using System.Collections.Generic;
@@ -11,15 +12,15 @@ namespace Case_School.Handlers
     public interface IFirstHandler
     {
         public Task InsertClassStudent(int numStudent, int numClass);
-        public Task InsertSubject(List<String> objects, List<double> Weights);
+        public Task InsertSubject(SubjectViewModel subject);
     }
     public class FirstHandler : IFirstHandler
     {
         private readonly IUnitOfWork _uow;
 
-        public FirstHandler(CaseSchoolContext dbContext)
+        public FirstHandler(IUnitOfWork uow)
         {
-            this._uow = new UnitOfWork(dbContext);
+            this._uow = uow;
         }
 
         public async Task InsertClassStudent(int numStudent, int numClass)
@@ -33,16 +34,33 @@ namespace Case_School.Handlers
             await _uow.Commit();
         }
 
-        public async Task InsertSubject(List<String> names, List<double> Weights)
+        public async Task InsertSubject(SubjectViewModel subjectViewModel)
         {
             int j = 0;
-            for (int i = 0; i < names.Count(); i++, j+=3)
+            for (int i = 0; i < subjectViewModel.Names.Count(); i++, j+=3)
             {
-                var weightList = new WeightProof().generateListWeight((List<double>)Weights.GetRange(j, j+2).ToList());
-                Subject subject = new Subject(Guid.NewGuid().ToString(), names[i], weightList);
+                var weightList = new WeightProof().generateListWeight(subjectViewModel.Weights.GetRange(j, j+2).ToList());
+                Subject subject = new Subject(Guid.NewGuid().ToString(), subjectViewModel.Names[i], weightList);
                 await _uow.Repository<Subject>().Insert(subject);
             }
             await _uow.Commit();
+        }
+
+        public async Task GenerateAllGrade()
+        {
+            IEnumerable<Student> students = await _uow.Repository<Student>().FindAll();
+            IEnumerable<Subject> subjects = await _uow.Repository<Subject>().FindAll();
+            var grades = new StudentGrade().GenerateGrade(students, subjects);
+            foreach (var grade in grades)
+            {
+                await _uow.Repository<StudentGrade>().Insert(grade);
+            }
+           await  _uow.Commit();
+        }
+
+        public async Task GenerateAllAverage()
+        {
+
         }
     }
 }

@@ -20,7 +20,7 @@ namespace Test
             var options = new DbContextOptionsBuilder<CaseSchoolContext>()
                 .UseInMemoryDatabase("DbSchool")
                 .Options;
-            var context = new CaseSchoolContext(options, new Mock<IConfiguration>().Object);
+            var context = new CaseSchoolContext(options);
 
             var estudante = new Student(Guid.NewGuid().ToString(), false);
             var listaEstudante = new List<Student>() { estudante };
@@ -50,7 +50,7 @@ namespace Test
             var options = new DbContextOptionsBuilder<CaseSchoolContext>()
                 .UseInMemoryDatabase("DbSchool")
                 .Options;
-            var context = new CaseSchoolContext(options, new Mock<IConfiguration>().Object);
+            var context = new CaseSchoolContext(options);
 
             var estudantes = new List<Student>() { new Student(Guid.NewGuid().ToString(), false), new Student(Guid.NewGuid().ToString(), true) };
             var listaEstudante = new List<Student>(estudantes);
@@ -97,7 +97,7 @@ namespace Test
             var options = new DbContextOptionsBuilder<CaseSchoolContext>()
                 .UseInMemoryDatabase("DbSchool")
                 .Options;
-            var context = new CaseSchoolContext(options, new Mock<IConfiguration>().Object);
+            var context = new CaseSchoolContext(options);
             IUnitOfWork uow = new UnitOfWork(context);
             IRepository<Subject> repo = uow.Repository<Subject>();
             repo.Insert(new Subject(Guid.NewGuid().ToString(), "teste", new List<WeightProof>()));
@@ -114,7 +114,7 @@ namespace Test
             var options = new DbContextOptionsBuilder<CaseSchoolContext>()
                 .UseInMemoryDatabase("DbSchool")
                 .Options;
-            var context = new CaseSchoolContext(options, new Mock<IConfiguration>().Object);
+            var context = new CaseSchoolContext(options);
             IUnitOfWork uow = new UnitOfWork(context);
             IRepository<Subject> repo = uow.Repository<Subject>();
             repo.Insert(new Subject(Guid.NewGuid().ToString(), "teste", new List<WeightProof>()));

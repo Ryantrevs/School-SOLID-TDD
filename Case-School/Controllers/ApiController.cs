@@ -1,5 +1,6 @@
 ﻿using Case_School.Data;
 using Case_School.Handlers;
+using Case_School.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -13,9 +14,9 @@ namespace Case_School.Controllers
         private readonly IFirstHandler _handler;
         //private readonly CaseSchoolContext dbContext;
 
-        public ApiController(CaseSchoolContext dbContext)
+        public ApiController(IFirstHandler handler)
         {
-            this._handler = new FirstHandler(dbContext);
+            this._handler = handler;
         }
 
         public void InsertClassAndStudent(int numStudent, int numClass)
@@ -25,9 +26,9 @@ namespace Case_School.Controllers
         }
 
         [Route("/step2")]
-        public void InsertSubjects(List<String> objects, List<double> Weights)
+        public void InsertSubjects([FromBody]SubjectViewModel subject)
         {
-            _handler.InsertSubject(objects, Weights);
+            _handler.InsertSubject(subject);
             return;
         }
     }
